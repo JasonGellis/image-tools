@@ -10,6 +10,7 @@
 # 1px = 2.54 cm / PPI
 # cm = pixels * ( 2.54 / PPI )
 
+#  import the packages
 from PIL import Image
 
 scale_size = int(input("Enter scale size in cm: "))
