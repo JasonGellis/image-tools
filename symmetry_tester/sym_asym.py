@@ -55,7 +55,7 @@ left_right_ratio = (int(np.size(left_half) - np.count_nonzero(left_half)) / (np.
 
 # area of the entire contour
 
-# show the image
+# show images
 cv2.imshow("Original Image", gray)
 cv2.imshow("Centroid", image)
 cv2.imshow("Top Half (at the centroid)", top_half)
