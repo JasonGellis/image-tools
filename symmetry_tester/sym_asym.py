@@ -1,12 +1,13 @@
 # import packages
 import argparse
+
+import cv2
 import imutils
 import numpy as np
-import cv2
 
 # construct argument parser
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required=True, help="path to the input image")
+ap.add_argument("-i", "--image", required = True, help = "path to the input image")
 args = vars(ap.parse_args())
 
 # load the image
@@ -50,7 +51,7 @@ right_half = right_half[:, :, 1]
 
 #  np.size() gives total number of pixels in the image
 #  np.count_nonzero() gives number of white pixels
-top_bot_ratio = (int(np.size(top_half) - np.count_nonzero(top_half)) / (np.size(bottom_half) - np.count_nonzero(bottom_half)))
+top_bottom_ratio = (int(np.size(top_half) - np.count_nonzero(top_half)) / (np.size(bottom_half) - np.count_nonzero(bottom_half)))
 left_right_ratio = (int(np.size(left_half) - np.count_nonzero(left_half)) / (np.size(right_half) - np.count_nonzero(right_half)))
 
 # area of the entire contour
@@ -63,6 +64,6 @@ cv2.imshow("Bottom Half (at the centroid)", bottom_half)
 cv2.imshow("Left Half (at the centroid)", left_half)
 cv2.imshow("Right Half (at the centroid)", right_half)
 
-print(f'The ratio of top to bottom halves is: {round(top_bot_ratio, 3)}')
+print(f'The ratio of top to bottom halves is: {round(top_bottom_ratio, 3)}')
 print(f'The ratio of left to right halves is: {round(left_right_ratio, 3)}')
 cv2.waitKey(0)
