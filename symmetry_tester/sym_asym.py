@@ -1,6 +1,5 @@
 # import packages
 import argparse
-
 import cv2
 import imutils
 import numpy as np
@@ -8,6 +7,7 @@ import numpy as np
 # construct argument parser
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required = True, help = "path to the input image")
+ap.add_argument("-o", "--output", required = True, help="path to output image")
 args = vars(ap.parse_args())
 
 # load the image
@@ -63,7 +63,15 @@ cv2.imshow("Top Half (at the centroid)", top_half)
 cv2.imshow("Bottom Half (at the centroid)", bottom_half)
 cv2.imshow("Left Half (at the centroid)", left_half)
 cv2.imshow("Right Half (at the centroid)", right_half)
+cv2.waitKey(0)
+
+# Save the image to disk.
+cv2.imwrite(args["output"] + ".png", gray)
+cv2.imwrite(args["output"] + ".png", image)  
+cv2.imwrite(args["output"] + ".png", top_half)  
+cv2.imwrite(args["output"] + ".png", bottom_half)  
+cv2.imwrite(args["output"] + ".png", left_half)  
+cv2.imwrite(args["output"] + ".png", right_half)  
 
 print(f'The ratio of top to bottom halves is: {round(top_bottom_ratio, 3)}')
 print(f'The ratio of left to right halves is: {round(left_right_ratio, 3)}')
-cv2.waitKey(0)
