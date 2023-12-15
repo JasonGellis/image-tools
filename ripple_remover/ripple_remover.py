@@ -1,34 +1,29 @@
 import cv2
 import numpy as np
 
-def remove_concentric_lines(input_image_path, output_image_path):
-    # Read the input image
-    image = cv2.imread(input_image_path)
+# Load the image
+image = cv2.imread('test.png')  # Replace 'your_image_path.jpg' with the actual path to your image
 
-    # Convert the image to grayscale
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# Convert the image to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Apply edge detection to find contours
-    edges = cv2.Canny(gray, 50, 150)
+# Apply edge detection using Canny
+edges = cv2.Canny(gray, 50, 150, apertureSize=3)
 
-    # Find contours in the edged image
-    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# Find contours in the edge-detected image
+contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    # Iterate through contours and remove concentric lines
-    for contour in contours:
-        # Fit a bounding ellipse around the contour
-        (x, y), (major_axis, minor_axis), angle = cv2.fitEllipse(contour)
+# Find the largest contour (assuming it is the outer boundary of the box)
+largest_contour = max(contours, key=cv2.contourArea)
 
-        # Check if the major and minor axes are almost equal
-        if major_axis / minor_axis < 1.1:
-            # If axes are almost equal, draw the contour (remove the line)
-            cv2.drawContours(image, [contour], -1, (255, 255, 255), thickness=cv2.FILLED)
+# Create a mask to extract the box
+mask = np.zeros_like(gray)
+cv2.drawContours(mask, [largest_contour], 0, (255), thickness=cv2.FILLED)
 
-    # Save the output image
-    cv2.imwrite(output_image_path, image)
+# Extract the box from the original image using the mask
+result = cv2.bitwise_and(image, image, mask=mask)
 
-if __name__ == "__main__":
-    input_path = "path/to/your/input/image.jpg"
-    output_path = "path/to/your/output/image_removed_lines.jpg"
-
-    remove_concentric_lines(~/Desktop/103.png, ~/Desktop/output)
+# Display the result
+cv2.imshow('Box without Lines', result)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
